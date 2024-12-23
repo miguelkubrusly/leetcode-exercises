@@ -54,10 +54,17 @@ from typing import List
 
 class Solution:
   def productExceptSelf(self, nums: List[int]) -> List[int]:
-    prefix_product = [1]
-    for i in  range(1,len(nums)):
-      prefix_product.append(prefix_product[i-1]*nums[i])
-    prefix_product = prefix_product[1:]
-    return [(prefix_product[:i] or 0)+(prefix_product[i:] or 0) for i in range(len(nums))]  
-        
-          
+    n = len(nums)
+    answer = [1]*n
+    
+    prefix = 1
+    for i in range(n):
+      answer[i]=prefix
+      prefix*=nums[i]
+      
+    suffix = 1  
+    for i in range(n-1,-1,-1):
+      answer[i]*= suffix
+      suffix *= nums[i]
+    
+    return answer
