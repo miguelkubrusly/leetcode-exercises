@@ -48,11 +48,9 @@
 # ======================================================== #
 # ======================================================== #
 
-# Original line of thougth:
-#   create function to measure length of trip
-#   apply function and form a dict
-#   make a default dict
-#   take vale and return keys (will be only one by constrains, but this algorith will work if there is more than one key still at a O(n) complexity)
+# New line of thougth:
+#   total gas must be higher than total cost
+#   test all starting points
 
 
 ###########################################################################
@@ -61,25 +59,25 @@
 
 
 from typing import List
-from collections import deque, defaultdict
 
 
 class Solution:
   def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
     n = len(gas)
-    anticipated_cost = list(deque(cost).rotate(1))
-    gas_station_balances = [gas[i] - anticipated_cost[i] for i in range(n)]
-
+    total_gas = 0
+    current_gas = 0
+    starting_index = 0
+    
     for i in range(n):
-      car_gas = 0
-      trips = 0
-      pathway = list(deque(gas_station_balances).rotate(i))
-      while trips < n:
-        if car_gas >= 0:
-          car_gas += gas_station_balances[i]
-          trips += 1
-        else:
-          break
-      else: 
-        return pathway[0]
-      return False 
+      total_gas+=gas[i] - cost[i]
+      current_gas+=gas[i] - cost[i]
+      if  current_gas < 0:
+        starting_index = i+1
+        current_gas = 0
+        
+    return starting_index if total_gas >= 0 else -1
+        
+    
+    
+    
+    
