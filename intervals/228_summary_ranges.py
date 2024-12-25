@@ -4,30 +4,20 @@ from typing import List
 class Solution:
     def summaryRanges(self, nums: List[int]) -> List[str]:
         res = []
-
         n = len(nums)
+
         if n == 0:
-            return []
+            return res
 
-        def find_last_consecutive_index(arr):
-            start, end = 0, 1
-            while end < len(arr) and arr[end] == arr[end - 1] + 1:
-                end += 1
-            return end - 1
+        start = 0
+        for i in range(1, n + 1):
+            if i == n or nums[i] != nums[i - 1] + 1:
+                if start == i - 1:
+                    res.append(f"{nums[start]}")
+                else:
+                    res.append(f"{nums[start]}->{nums[i-1]}")
+                start = i
 
-        left = 0
-        right = find_last_consecutive_index(nums[left:])
-        intervals = []
-        while right < n:
-            intervals.append(nums[left : right + 1])
-            left = right + 1
-            right = find_last_consecutive_index(nums[left:])
-
-        for i in intervals:
-            if i[0] == i[1]:
-                res.append(f"{i[0]}")
-            else:
-                res.append(f"{i[0]}->{i[1]}")
         return res
 
 
