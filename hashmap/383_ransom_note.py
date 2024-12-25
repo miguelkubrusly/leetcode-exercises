@@ -1,21 +1,18 @@
-from collections import defaultdict
+from collections import Counter
 
 
 class Solution:
 
   def canConstruct(self, ransomNote: str, magazine: str) -> bool:
-    chars = defaultdict(int)
-    for c in magazine:
-      chars[c] += 1
-    for r in ransomNote:
-      chars[r] -= 1
-    if any(chars.values < 0):
-      return False
+    magazine_counts = Counter(magazine)
+    ransom_counts = Counter(ransomNote)
+    for char, count in ransom_counts.items():
+      if magazine_counts[char] < count:
+        return False
     return True
 
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
-
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 """ 383. Ransom Note
 Easy
 Topics
